@@ -54,5 +54,16 @@
   },
   "cloud": true,
   "sitemapLocation": "sitemap.json",
-  "style": "v2"
+  "style": "v2",
+  "requiredPrivateInfos": [
+    "chooseMedia"
+  ],
+  "permission": {
+    "scope.camera": {
+      "desc": "用于录制训练动作视频"
+    },
+    "scope.writePhotosAlbum": {
+      "desc": "用于保存训练视频到相册"
+    }
+  }
 }

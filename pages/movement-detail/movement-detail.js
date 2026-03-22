@@ -65,7 +65,7 @@ Page({
         this.uploadVideo(tempFile.tempFilePath)
       },
       fail: (err) => {
-        if (err.errMsg.includes('cancel')) return
+        if (err && err.errMsg && err.errMsg.includes('cancel')) return
         wx.showToast({ title: '无法调用相机', icon: 'none' })
       }
     })

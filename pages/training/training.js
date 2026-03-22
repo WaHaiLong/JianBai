@@ -10,6 +10,7 @@ Page({
     isResting: false,
     // 录像相关
     recordingExerciseIndex: -1,
+    uploadProgress: 0,
     videoMap: {} // exerciseId -> fileID
   },
 
@@ -236,26 +237,31 @@ Page({
   },
 
   // 上传视频到云存储
-  _uploadVideo(exerciseId, tempFilePath, exerciseIndex) {
-    wx.showLoading({ title: '上传视频...' })
+  _uploadVideo(exerciseId, tempFilePath) {
     const cloudPath = `workouts/${exerciseId}_${Date.now()}.mp4`
 
-    wx.cloud.uploadFile({
+    // 用 uploadTask 支持进度回调
+    const uploadTask = wx.cloud.uploadFile({
       cloudPath,
       filePath: tempFilePath,
       success: (res) => {
-        wx.hideLoading()
         const videoMap = { ...this.data.videoMap }
         videoMap[exerciseId] = res.fileID
-        this.setData({ videoMap, recordingExerciseIndex: -1 })
+        this.setData({ videoMap, recordingExerciseIndex: -1, uploadProgress: 0 })
         wx.showToast({ title: '视频已保存', icon: 'success' })
         this._saveActiveWorkout()
       },
-      fail: () => {
-        wx.hideLoading()
-        this.setData({ recordingExerciseIndex: -1 })
-        wx.showToast({ title: '上传失败，已保存本地', icon: 'none' })
+      fail: (err) => {
+        console.error('视频上传失败', err)
+        this.setData({ recordingExerciseIndex: -1, uploadProgress: 0 })
+        wx.showToast({ title: '上传失败，请重试', icon: 'none' })
       }
+    })
+
+    uploadTask.onProgressUpdate(({ progress }) => {
+      this.setData({ uploadProgress: progress })
+      wx.showLoading({ title: `上传中 ${progress}%` })
+      if (progress >= 100) wx.hideLoading()
     })
   },
 
