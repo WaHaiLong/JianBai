@@ -27,3 +27,6 @@
     </view>
   </scroll-view>
 </view>
+
+<!-- 自定义TabBar -->
+<custom-tab-bar />

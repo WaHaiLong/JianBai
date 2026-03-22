@@ -34,15 +34,29 @@
     "convertToMiniprogram": false,
     "disableUseStrict": false,
     "ignoreUploadUnusedFiles": true,
-    "enableEmbeddedAppInPlugin": false
+    "enableEmbeddedAppInPlugin": false,
+    "compileWorklet": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
   },
   "compileType": "miniprogram",
   "libVersion": "3.4.3",
-  "appid": "wx__YOUR_APPID__",
+  "appid": "wx3d0f371d6c290b8a",
   "projectname": "JianBai",
   "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
-  }
+  },
+  "simulatorPluginLibVersion": {}
 }

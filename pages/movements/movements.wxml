@@ -129,3 +129,6 @@
     <text class="float-btn-text">饮食</text>
   </view>
 </view>
+
+<!-- 自定义TabBar -->
+<custom-tab-bar />

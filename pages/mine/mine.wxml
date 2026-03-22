@@ -1,4 +1,22 @@
 <view class="container">
+  <!-- 品牌Logo区 -->
+  <view class="logo-section">
+    <view class="logo-banner">
+      <view class="logo-left">
+        <view class="logo-icon-wrapper">
+          <image class="logo-icon" src="/assets/icons/logo.svg" mode="aspectFit" />
+        </view>
+        <view class="logo-text-group">
+          <text class="logo-title">健百</text>
+          <text class="logo-subtitle">JianBai · 智能健身</text>
+        </view>
+      </view>
+      <view class="logo-badge">
+        <text class="badge-text">v1.0</text>
+      </view>
+    </view>
+  </view>
+
   <!-- 用户信息区 -->
   <view class="user-section">
     <view wx:if="{{userInfo}}" class="user-info">
@@ -25,10 +43,9 @@
       <text class="stat-value">{{stats.totalWorkouts}}</text>
       <text class="stat-label">训练次数</text>
     </view>
-    <view class="stat-divider"></view>
     <view class="stat-item">
       <text class="stat-value">{{stats.totalVolume}}</text>
-      <text class="stat-label">总训练量</text>
+      <text class="stat-label">总训练量(kg)</text>
     </view>
   </view>
 
@@ -51,3 +68,6 @@
     </view>
   </view>
 </view>
+
+<!-- 自定义TabBar -->
+<custom-tab-bar />
