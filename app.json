@@ -55,15 +55,16 @@
   "cloud": true,
   "sitemapLocation": "sitemap.json",
   "style": "v2",
-  "requiredPrivateInfos": [
-    "chooseMedia"
-  ],
+  "requiredPrivateInfos": [],
   "permission": {
     "scope.camera": {
       "desc": "用于录制训练动作视频"
     },
     "scope.writePhotosAlbum": {
       "desc": "用于保存训练视频到相册"
+    },
+    "chooseMedia": {
+      "desc": "用于录制和选择训练视频"
     }
   }
 }
