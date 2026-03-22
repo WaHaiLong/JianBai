@@ -111,7 +111,7 @@ Page({
   // 添加动作（跳转到动作库选择）
   onAddExercise() {
     wx.navigateTo({
-      url: '/pages/movements/movements',
+      url: '/pages/movements/movements?fromTraining=1',
       events: {
         selectExercise: (exercise) => {
           this._addExercise(exercise)

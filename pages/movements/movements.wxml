@@ -69,7 +69,7 @@
 
       <!-- 器械标题 -->
       <view class="section-title">
-        <text>{{equipmentTypes[equipmentTypes.findIndex(e => e.id === selectedEquipment)].name || ''}}</text>
+        <text>{{selectedEquipmentName}}</text>
       </view>
 
       <!-- 动作网格 -->

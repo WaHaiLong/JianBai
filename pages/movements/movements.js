@@ -8,14 +8,19 @@ Page({
     selectedMuscleGroup: 'back',
     selectedSubGroup: null,
     selectedEquipment: 'barbell',
+    selectedEquipmentName: '',
     exercises: [],
     filteredExercises: [],
+    fromTraining: false,
     // 右侧快捷导航器械列表（去除已在tab显示的）
     sideEquipments: []
   },
 
-  onLoad() {
-    this.setData({ exercises: EXERCISES })
+  onLoad(options) {
+    this.setData({
+      exercises: EXERCISES,
+      fromTraining: options.fromTraining === '1'
+    })
     this._buildSideEquipments()
     this._filterExercises()
   },
@@ -58,7 +63,8 @@ Page({
       )
     }
 
-    this.setData({ filteredExercises: result })
+    const eq = EQUIPMENT_TYPES.find(e => e.id === this.data.selectedEquipment)
+    this.setData({ filteredExercises: result, selectedEquipmentName: eq ? eq.name : '' })
   },
 
   // 搜索输入
@@ -113,9 +119,16 @@ Page({
   // 点击动作卡片
   onExerciseTap(e) {
     const { id } = e.currentTarget.dataset
-    wx.navigateTo({
-      url: `/pages/movement-detail/movement-detail?id=${id}`
-    })
+    if (this.data.fromTraining) {
+      // 从训练页过来：直接把动作传回去
+      const exercise = this.data.exercises.find(ex => ex.id === id)
+      this.getOpenerEventChannel().emit('selectExercise', exercise)
+      wx.navigateBack()
+    } else {
+      wx.navigateTo({
+        url: `/pages/movement-detail/movement-detail?id=${id}`
+      })
+    }
   },
 
   // 点击添加动作按钮
