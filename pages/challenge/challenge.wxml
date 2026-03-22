@@ -1,0 +1,29 @@
+<view class="container">
+  <view class="page-title">训练挑战</view>
+
+  <scroll-view scroll-y class="challenge-list">
+    <view class="challenge-card" wx:for="{{challenges}}" wx:key="id">
+      <view class="card-left">
+        <text class="challenge-emoji">{{item.emoji}}</text>
+      </view>
+      <view class="card-content">
+        <text class="challenge-title">{{item.title}}</text>
+        <text class="challenge-desc">{{item.description}}</text>
+        <view class="challenge-meta">
+          <text class="meta-item">⏱ {{item.duration}}</text>
+          <text class="meta-item">📊 {{item.difficulty}}</text>
+        </view>
+        <view class="progress-bar" wx:if="{{item.isJoined}}">
+          <view class="progress-fill" style="width: {{item.progress / item.totalDays * 100}}%"></view>
+        </view>
+      </view>
+      <view
+        class="join-btn {{item.isJoined ? 'join-btn-active' : ''}}"
+        bindtap="onJoinChallenge"
+        data-id="{{item.id}}"
+      >
+        <text>{{item.isJoined ? '进行中' : '加入'}}</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

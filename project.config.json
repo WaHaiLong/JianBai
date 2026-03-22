@@ -1,0 +1,48 @@
+{
+  "description": "健百 - 智能健身记录小程序",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "setting": {
+    "bundle": false,
+    "userConfirmedBundleSwitch": false,
+    "urlCheck": true,
+    "scopeDataCheck": false,
+    "coverView": true,
+    "es6": true,
+    "postcss": true,
+    "compileHotReLoad": false,
+    "lazyloadPlaceholderEnable": false,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "autoAudits": false,
+    "newFeature": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "useIsolateContext": true,
+    "nodeModules": false,
+    "enhance": true,
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
+    "useApiEventHook": true,
+    "showShadowRootInWxmlPanel": true,
+    "packNpmManually": false,
+    "enableEngineNative": false,
+    "useStaticServer": true,
+    "useCompilerPlugins": false,
+    "convertToMiniprogram": false,
+    "disableUseStrict": false,
+    "ignoreUploadUnusedFiles": true,
+    "enableEmbeddedAppInPlugin": false
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.4.3",
+  "appid": "wx__YOUR_APPID__",
+  "projectname": "JianBai",
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
+}

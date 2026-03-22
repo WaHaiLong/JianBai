@@ -1,0 +1,133 @@
+<!-- 未开始训练 -->
+<view class="container" wx:if="{{!isWorkoutActive}}">
+  <view class="empty-training">
+    <view class="empty-icon">💪</view>
+    <text class="empty-title">准备好训练了吗？</text>
+    <text class="empty-subtitle">记录每一次突破，见证自己的成长</text>
+    <view class="start-btn" bindtap="onStartWorkout">
+      <text>开始训练</text>
+    </view>
+  </view>
+</view>
+
+<!-- 训练进行中 -->
+<view class="container" wx:else>
+  <!-- 顶部计时栏 -->
+  <view class="timer-bar">
+    <view class="timer-info">
+      <text class="timer-label">训练时长</text>
+      <text class="timer-value">{{elapsedTime}}</text>
+    </view>
+    <view class="timer-actions">
+      <view class="cancel-btn" bindtap="onCancelWorkout">放弃</view>
+      <view class="finish-btn" bindtap="onFinishWorkout">完成</view>
+    </view>
+  </view>
+
+  <!-- 休息计时器 -->
+  <view class="rest-bar" wx:if="{{isResting}}">
+    <view class="rest-info">
+      <text class="rest-label">💤 休息中</text>
+      <text class="rest-timer">{{restTimeLeft}}s</text>
+    </view>
+    <view class="rest-skip" bindtap="onSkipRest">跳过</view>
+  </view>
+
+  <!-- 动作列表 -->
+  <scroll-view class="exercise-list" scroll-y="true">
+    <view class="exercise-item" wx:for="{{exercises}}" wx:key="id">
+      <!-- 动作头部 -->
+      <view class="exercise-header">
+        <text class="exercise-title">{{item.name}}</text>
+        <view class="exercise-header-actions">
+          <!-- 录制视频按钮 -->
+          <view
+            class="record-btn {{videoMap[item.id] ? 'record-btn-done' : ''}}"
+            bindtap="onRecordVideo"
+            data-index="{{index}}"
+          >
+            <text>{{videoMap[item.id] ? '📹✓' : '📹'}}</text>
+          </view>
+          <!-- 播放按钮（有视频时显示） -->
+          <view
+            class="play-btn"
+            wx:if="{{videoMap[item.id]}}"
+            bindtap="onPlayVideo"
+            data-exercise-id="{{item.id}}"
+          >
+            <text>▶</text>
+          </view>
+          <!-- 删除动作 -->
+          <view class="delete-btn" bindtap="onDeleteExercise" data-index="{{index}}">✕</view>
+        </view>
+      </view>
+
+      <!-- 主要肌肉 -->
+      <view class="exercise-muscles">
+        <text class="muscle-badge" wx:for="{{item.primaryMuscles}}" wx:key="*this">{{item}}</text>
+      </view>
+
+      <!-- 组数表头 -->
+      <view class="set-header">
+        <text class="set-col-num">组</text>
+        <text class="set-col-prev">上次</text>
+        <text class="set-col-weight">重量(kg)</text>
+        <text class="set-col-reps">次数</text>
+        <text class="set-col-done">✓</text>
+      </view>
+
+      <!-- 组数列表 -->
+      <view
+        class="set-row {{item.sets[setIndex].done ? 'set-row-done' : ''}}"
+        wx:for="{{item.sets}}"
+        wx:for-item="set"
+        wx:for-index="setIndex"
+        wx:key="setIndex"
+      >
+        <text class="set-col-num">{{setIndex + 1}}</text>
+        <text class="set-col-prev">-</text>
+        <input
+          class="set-col-weight set-input"
+          type="digit"
+          placeholder="0"
+          value="{{set.weight}}"
+          bindinput="onWeightInput"
+          data-ex-index="{{index}}"
+          data-set-index="{{setIndex}}"
+          disabled="{{set.done}}"
+        />
+        <input
+          class="set-col-reps set-input"
+          type="number"
+          placeholder="0"
+          value="{{set.reps}}"
+          bindinput="onRepsInput"
+          data-ex-index="{{index}}"
+          data-set-index="{{setIndex}}"
+          disabled="{{set.done}}"
+        />
+        <view
+          class="set-done-btn {{set.done ? 'set-done-active' : ''}}"
+          bindtap="onToggleSet"
+          data-ex-index="{{index}}"
+          data-set-index="{{setIndex}}"
+        >
+          <text>✓</text>
+        </view>
+      </view>
+
+      <!-- 添加组 -->
+      <view class="add-set-btn" bindtap="onAddSet" data-index="{{index}}">
+        <text>＋ 添加组</text>
+      </view>
+    </view>
+
+    <!-- 添加动作按钮 -->
+    <view class="add-exercise-btn" bindtap="onAddExercise">
+      <text>＋ 添加动作</text>
+    </view>
+
+    <!-- 底部留白 -->
+    <view style="height: 120rpx;"></view>
+  </scroll-view>
+</view>

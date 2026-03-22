@@ -1,0 +1,315 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* ===== 未开始状态 ===== */
+.empty-training {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 32rpx;
+}
+
+.empty-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 16rpx;
+}
+
+.empty-subtitle {
+  font-size: 28rpx;
+  color: #999;
+  text-align: center;
+  margin-bottom: 64rpx;
+  line-height: 1.6;
+}
+
+.start-btn {
+  background-color: #1890ff;
+  color: #fff;
+  padding: 28rpx 80rpx;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+/* ===== 计时栏 ===== */
+.timer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 32rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.timer-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.timer-label {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.timer-value {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #000;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.cancel-btn {
+  padding: 16rpx 32rpx;
+  border: 2rpx solid #ff4d4f;
+  color: #ff4d4f;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+}
+
+.finish-btn {
+  padding: 16rpx 32rpx;
+  background-color: #1890ff;
+  color: #fff;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+/* ===== 休息计时器 ===== */
+.rest-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 32rpx;
+  background: linear-gradient(135deg, #e8f4ff, #bae7ff);
+  border-bottom: 1rpx solid #91d5ff;
+  flex-shrink: 0;
+}
+
+.rest-info {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.rest-label {
+  font-size: 26rpx;
+  color: #0050b3;
+}
+
+.rest-timer {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1890ff;
+}
+
+.rest-skip {
+  font-size: 26rpx;
+  color: #1890ff;
+  border: 1rpx solid #1890ff;
+  padding: 8rpx 24rpx;
+  border-radius: 32rpx;
+}
+
+/* ===== 动作列表 ===== */
+.exercise-list {
+  flex: 1;
+  padding: 16rpx;
+}
+
+.exercise-item {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.exercise-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.exercise-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #000;
+  flex: 1;
+}
+
+.exercise-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.record-btn {
+  font-size: 28rpx;
+  padding: 8rpx 16rpx;
+  background-color: #f5f5f5;
+  border-radius: 8rpx;
+}
+
+.record-btn-done {
+  background-color: #f6ffed;
+}
+
+.play-btn {
+  font-size: 24rpx;
+  padding: 8rpx 16rpx;
+  background-color: #e8f4ff;
+  border-radius: 8rpx;
+  color: #1890ff;
+}
+
+.delete-btn {
+  font-size: 28rpx;
+  color: #ccc;
+  padding: 8rpx;
+}
+
+.exercise-muscles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  margin-bottom: 16rpx;
+}
+
+.muscle-badge {
+  font-size: 22rpx;
+  color: #cf1322;
+  background-color: #fff1f0;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+/* ===== 组数表格 ===== */
+.set-header {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+  margin-bottom: 8rpx;
+}
+
+.set-row {
+  display: flex;
+  align-items: center;
+  padding: 14rpx 0;
+  border-bottom: 1rpx solid #fafafa;
+  transition: background-color 0.2s;
+}
+
+.set-row-done {
+  background-color: #f6ffed;
+  border-radius: 8rpx;
+  padding: 14rpx 8rpx;
+}
+
+.set-col-num {
+  width: 60rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.set-col-prev {
+  flex: 1;
+  text-align: center;
+  font-size: 24rpx;
+  color: #bbb;
+}
+
+.set-col-weight {
+  flex: 1.5;
+  text-align: center;
+  font-size: 26rpx;
+  color: #333;
+}
+
+.set-col-reps {
+  flex: 1.2;
+  text-align: center;
+  font-size: 26rpx;
+  color: #333;
+}
+
+.set-col-done {
+  width: 64rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: #ccc;
+  flex-shrink: 0;
+}
+
+.set-input {
+  background-color: #f5f5f5;
+  border-radius: 8rpx;
+  padding: 8rpx;
+  text-align: center;
+  margin: 0 8rpx;
+}
+
+.set-done-btn {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  border: 2rpx solid #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 4rpx;
+  font-size: 24rpx;
+  color: #d9d9d9;
+  flex-shrink: 0;
+}
+
+.set-done-active {
+  background-color: #52c41a;
+  border-color: #52c41a;
+  color: #fff;
+}
+
+/* ===== 添加按钮 ===== */
+.add-set-btn {
+  text-align: center;
+  padding: 16rpx;
+  margin-top: 8rpx;
+  color: #1890ff;
+  font-size: 26rpx;
+  border: 1rpx dashed #91d5ff;
+  border-radius: 12rpx;
+}
+
+.add-exercise-btn {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  text-align: center;
+  color: #1890ff;
+  font-size: 30rpx;
+  font-weight: 600;
+  border: 2rpx dashed #91d5ff;
+  margin-bottom: 16rpx;
+}

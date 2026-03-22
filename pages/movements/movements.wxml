@@ -1,0 +1,131 @@
+<view class="container">
+  <!-- 顶部搜索栏 -->
+  <view class="search-header">
+    <view class="search-bar">
+      <view class="search-box">
+        <text class="search-icon-text">🔍</text>
+        <input
+          class="search-input"
+          placeholder="输入动作名字搜索"
+          placeholder-style="color: #bbb; font-size: 28rpx;"
+          value="{{searchKeyword}}"
+          bindinput="onSearchInput"
+          confirm-type="search"
+        />
+        <text class="search-clear" wx:if="{{searchKeyword}}" bindtap="onSearchClear">✕</text>
+      </view>
+    </view>
+    <view class="add-btn" bindtap="onAddExercise">
+      <text class="add-icon">＋</text>
+    </view>
+  </view>
+
+  <!-- 主体内容区 -->
+  <view class="main-content">
+    <!-- 左侧肌肉群导航 -->
+    <scroll-view class="muscle-nav" scroll-y="true">
+      <block wx:for="{{muscleGroups}}" wx:key="id">
+        <view
+          class="muscle-item {{selectedMuscleGroup === item.id ? 'muscle-item-active' : ''}}"
+          bindtap="onMuscleGroupTap"
+          data-id="{{item.id}}"
+        >
+          <text>{{item.name}}</text>
+        </view>
+        <!-- 子分组 -->
+        <block wx:if="{{selectedMuscleGroup === item.id && item.sub.length > 0}}">
+          <view
+            wx:for="{{item.sub}}"
+            wx:for-item="subItem"
+            wx:key="id"
+            class="sub-item {{selectedSubGroup === subItem.id ? 'sub-item-active' : ''}}"
+            bindtap="onSubGroupTap"
+            data-id="{{subItem.id}}"
+          >
+            <text>{{subItem.name}}</text>
+          </view>
+        </block>
+      </block>
+    </scroll-view>
+
+    <!-- 右侧内容区 -->
+    <view class="content-area">
+      <!-- 器械Tab栏 -->
+      <view class="equipment-tabs">
+        <scroll-view scroll-x="true" class="tab-scroll">
+          <view class="tab-list">
+            <view
+              wx:for="{{equipmentTypes}}"
+              wx:key="id"
+              class="tab-item {{selectedEquipment === item.id ? 'tab-item-active' : ''}}"
+              bindtap="onEquipmentTap"
+              data-id="{{item.id}}"
+            >
+              {{item.name}}
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 器械标题 -->
+      <view class="section-title">
+        <text>{{equipmentTypes[equipmentTypes.findIndex(e => e.id === selectedEquipment)].name || ''}}</text>
+      </view>
+
+      <!-- 动作网格 -->
+      <scroll-view class="exercise-scroll" scroll-y="true">
+        <!-- 空状态 -->
+        <view class="empty-state" wx:if="{{filteredExercises.length === 0}}">
+          <text class="empty-icon">💪</text>
+          <text class="empty-text">暂无相关动作</text>
+        </view>
+
+        <!-- 动作卡片网格 -->
+        <view class="exercise-grid" wx:else>
+          <view
+            class="exercise-card"
+            wx:for="{{filteredExercises}}"
+            wx:key="id"
+            bindtap="onExerciseTap"
+            data-id="{{item.id}}"
+          >
+            <!-- 角标 -->
+            <view class="card-badge" wx:if="{{item.hasTutorial}}">
+              <text>讲解</text>
+            </view>
+            <view class="card-badge card-badge-orange" wx:elif="{{item.hasMultiAngle}}">
+              <text>多角度</text>
+            </view>
+
+            <!-- 动作图示 -->
+            <view class="exercise-image-placeholder">
+              <text class="exercise-emoji">🏋️</text>
+            </view>
+
+            <!-- 动作名称 -->
+            <text class="exercise-name">{{item.name}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 右侧快捷器械导航 -->
+    <view class="side-nav">
+      <view
+        wx:for="{{sideEquipments}}"
+        wx:key="id"
+        class="side-nav-item {{selectedEquipment === item.id ? 'side-nav-item-active' : ''}}"
+        bindtap="onSideEquipmentTap"
+        data-id="{{item.id}}"
+      >
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 右下角悬浮按钮 -->
+  <view class="float-btn" bindtap="onTrainingDietTap">
+    <text class="float-btn-text">训练</text>
+    <text class="float-btn-text">饮食</text>
+  </view>
+</view>

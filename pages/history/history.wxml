@@ -1,0 +1,82 @@
+<view class="container">
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{historyList.length === 0}}">
+    <text class="empty-icon">📋</text>
+    <text class="empty-text">暂无训练记录</text>
+    <text class="empty-sub">完成一次训练后，记录将出现在这里</text>
+  </view>
+
+  <!-- 历史列表 -->
+  <scroll-view scroll-y="true" class="history-list" wx:else>
+    <view
+      class="history-card"
+      wx:for="{{historyList}}"
+      wx:key="id"
+      bindtap="onRecordTap"
+      data-index="{{index}}"
+    >
+      <view class="card-header">
+        <view class="card-info">
+          <text class="card-date">{{item.date}}</text>
+          <text class="card-name">{{item.name}}</text>
+        </view>
+        <view class="card-meta">
+          <text class="card-duration">⏱ {{item.duration}}</text>
+          <view class="delete-btn" catchtap="onDeleteRecord" data-index="{{index}}">✕</view>
+        </view>
+      </view>
+
+      <!-- 动作摘要 -->
+      <view class="exercise-summary">
+        <view class="summary-item" wx:for="{{item.exercises}}" wx:key="id" wx:for-item="ex">
+          <text class="summary-name">{{ex.name}}</text>
+          <text class="summary-sets">{{ex.sets.length}}组</text>
+          <text class="summary-video" wx:if="{{ex.videoFileID}}">📹</text>
+        </view>
+      </view>
+
+      <view class="card-footer">
+        <text class="card-count">{{item.exercises.length}} 个动作</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 详情弹窗 -->
+  <view class="detail-mask" wx:if="{{showDetail}}" bindtap="onCloseDetail">
+    <view class="detail-panel" catchtap>
+      <view class="detail-header">
+        <text class="detail-title">{{selectedRecord.name}}</text>
+        <text class="detail-close" bindtap="onCloseDetail">✕</text>
+      </view>
+      <text class="detail-date">{{selectedRecord.date}} · {{selectedRecord.duration}}</text>
+
+      <scroll-view scroll-y="true" class="detail-exercises">
+        <view
+          class="detail-exercise"
+          wx:for="{{selectedRecord.exercises}}"
+          wx:key="id"
+        >
+          <view class="detail-ex-header">
+            <text class="detail-ex-name">{{item.name}}</text>
+            <view
+              class="video-btn"
+              wx:if="{{item.videoFileID}}"
+              bindtap="onPlayRecordVideo"
+              data-file-id="{{item.videoFileID}}"
+            >
+              <text>▶ 查看视频</text>
+            </view>
+          </view>
+          <view class="detail-sets">
+            <view class="detail-set" wx:for="{{item.sets}}" wx:key="*this" wx:for-item="set">
+              <text class="detail-set-num">第{{index+1}}组</text>
+              <text class="detail-set-weight">{{set.weight || '-'}}kg</text>
+              <text class="detail-set-reps">×{{set.reps || '-'}}</text>
+              <text class="detail-set-done">{{set.done ? '✓' : '○'}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

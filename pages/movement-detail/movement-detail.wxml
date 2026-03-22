@@ -1,0 +1,80 @@
+<view class="container" wx:if="{{exercise}}">
+  <!-- 动作演示区 -->
+  <view class="demo-area">
+    <view class="demo-placeholder" wx:if="{{!videoSrc}}">
+      <text class="demo-emoji">🏋️</text>
+      <view class="demo-actions">
+        <view class="demo-btn" bindtap="onPlayVideo" wx:if="{{exercise.hasTutorial}}">
+          <text>▶ 观看讲解</text>
+        </view>
+        <view class="demo-btn demo-btn-outline" bindtap="onRecordVideo">
+          <text>📹 录制动作</text>
+        </view>
+      </view>
+    </view>
+    <video
+      wx:else
+      class="exercise-video"
+      src="{{videoSrc}}"
+      controls
+      autoplay
+    />
+  </view>
+
+  <!-- 动作信息 -->
+  <view class="info-section">
+    <!-- 标题与标签 -->
+    <view class="info-header">
+      <text class="exercise-title">{{exercise.name}}</text>
+      <view class="tags">
+        <view class="tag tag-blue" wx:if="{{exercise.hasTutorial}}">讲解</view>
+        <view class="tag tag-orange" wx:if="{{exercise.hasMultiAngle}}">多角度</view>
+        <view class="tag tag-difficulty">{{exercise.difficulty === 'beginner' ? '初级' : exercise.difficulty === 'intermediate' ? '中级' : '高级'}}</view>
+      </view>
+    </view>
+
+    <!-- 主要肌肉 -->
+    <view class="muscle-section">
+      <view class="section-label">主要肌肉</view>
+      <view class="muscle-tags">
+        <text class="muscle-tag primary" wx:for="{{exercise.primaryMuscles}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 协同肌肉 -->
+    <view class="muscle-section" wx:if="{{exercise.secondaryMuscles.length > 0}}">
+      <view class="section-label">协同肌肉</view>
+      <view class="muscle-tags">
+        <text class="muscle-tag secondary" wx:for="{{exercise.secondaryMuscles}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 描述 -->
+    <view class="description-section">
+      <view class="section-label">动作说明</view>
+      <text class="description-text">{{exercise.description}}</text>
+    </view>
+
+    <!-- 要点提示 -->
+    <view class="tips-section">
+      <view class="section-label">动作要点</view>
+      <view class="tips-list">
+        <view class="tip-item" wx:for="{{exercise.tips}}" wx:key="*this">
+          <text class="tip-dot">•</text>
+          <text class="tip-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="add-workout-btn" bindtap="onAddToWorkout">
+      <text>添加到训练计划</text>
+    </view>
+  </view>
+</view>
+
+<view class="not-found" wx:else>
+  <text>动作不存在</text>
+</view>
