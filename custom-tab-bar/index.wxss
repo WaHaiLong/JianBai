@@ -4,13 +4,13 @@
   left: 0;
   right: 0;
   height: 100rpx;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(20rpx);
-  -webkit-backdrop-filter: blur(20rpx);
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(24rpx);
+  -webkit-backdrop-filter: blur(24rpx);
   display: flex;
   padding-bottom: env(safe-area-inset-bottom);
-  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-  box-shadow: 0 -2rpx 20rpx rgba(0, 0, 0, 0.06);
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -1rpx 0 rgba(0, 0, 0, 0.06), 0 -4rpx 24rpx rgba(0, 0, 0, 0.05);
   z-index: 1000;
 }
 
@@ -24,6 +24,10 @@
   transition: all 0.2s ease;
 }
 
+.tab-item:active {
+  opacity: 0.75;
+}
+
 .icon-wrapper {
   width: 48rpx;
   height: 48rpx;
@@ -31,7 +35,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 4rpx;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .icon {
@@ -40,20 +44,20 @@
   transition: all 0.2s ease;
 }
 
-.tab-item.active .icon {
-  transform: scale(1.15);
+.tab-item.active .icon-wrapper {
+  transform: scale(1.12) translateY(-2rpx);
 }
 
 .text {
   font-size: 20rpx;
-  color: #999;
+  color: #aaa;
   transition: color 0.2s ease;
   font-weight: 500;
 }
 
 .tab-item.active .text {
   color: #1890ff;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .active-dot {
@@ -61,8 +65,8 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 40rpx;
+  width: 36rpx;
   height: 4rpx;
-  background: linear-gradient(90deg, #1890ff, #69b1ff);
+  background: linear-gradient(90deg, #1890ff, #40a9ff);
   border-radius: 0 0 4rpx 4rpx;
 }
