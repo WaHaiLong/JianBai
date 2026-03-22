@@ -31,7 +31,7 @@
         <view class="summary-item" wx:for="{{item.exercises}}" wx:key="id" wx:for-item="ex">
           <text class="summary-name">{{ex.name}}</text>
           <text class="summary-sets">{{ex.sets.length}}组</text>
-          <text class="summary-video" wx:if="{{ex.videoFileID}}">📹</text>
+          <text class="summary-video" wx:if="{{ex.videos && ex.videos.length > 0}}">📹{{ex.videos.length}}</text>
         </view>
       </view>
 
@@ -60,11 +60,25 @@
             <text class="detail-ex-name">{{item.name}}</text>
             <view
               class="video-btn"
-              wx:if="{{item.videoFileID}}"
+              wx:if="{{item.videos && item.videos.length > 0}}"
               bindtap="onPlayRecordVideo"
-              data-file-id="{{item.videoFileID}}"
+              data-file-id="{{item.videos[0].fileID}}"
             >
-              <text>▶ 查看视频</text>
+              <text>▶ 查看{{item.videos.length}}个视频</text>
+            </view>
+          </view>
+          <!-- 视频列表 -->
+          <view class="detail-video-list" wx:if="{{item.videos && item.videos.length > 0}}">
+            <view
+              class="detail-video-item"
+              wx:for="{{item.videos}}"
+              wx:for-item="video"
+              wx:key="fileID"
+              bindtap="onPlayRecordVideo"
+              data-file-id="{{video.fileID}}"
+            >
+              <text class="detail-video-icon">▶</text>
+              <text class="detail-video-name">视频 {{item.videos.length - index}}</text>
             </view>
           </view>
           <view class="detail-sets">

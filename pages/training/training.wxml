@@ -40,25 +40,42 @@
       <view class="exercise-header">
         <text class="exercise-title">{{item.name}}</text>
         <view class="exercise-header-actions">
-          <!-- 录制视频按钮 -->
+          <!-- 录制视频按钮（显示视频数量） -->
           <view
-            class="record-btn {{videoMap[item.id] ? 'record-btn-done' : ''}}"
+            class="record-btn {{videoMap[item.id] && videoMap[item.id].length > 0 ? 'record-btn-done' : ''}}"
             bindtap="onRecordVideo"
             data-index="{{index}}"
           >
-            <text>{{videoMap[item.id] ? '📹✓' : '📹'}}</text>
+            <text>📹{{videoMap[item.id] && videoMap[item.id].length > 0 ? videoMap[item.id].length : ''}}</text>
           </view>
-          <!-- 播放按钮（有视频时显示） -->
+          <!-- 展开/收起视频列表 -->
           <view
             class="play-btn"
-            wx:if="{{videoMap[item.id]}}"
-            bindtap="onPlayVideo"
-            data-exercise-id="{{item.id}}"
+            wx:if="{{videoMap[item.id] && videoMap[item.id].length > 0}}"
+            bindtap="onToggleVideoList"
+            data-index="{{index}}"
           >
-            <text>▶</text>
+            <text>{{expandVideoIndex === index ? '▼' : '▶'}}</text>
           </view>
           <!-- 删除动作 -->
           <view class="delete-btn" bindtap="onDeleteExercise" data-index="{{index}}">✕</view>
+        </view>
+      </view>
+
+      <!-- 视频列表（展开时显示） -->
+      <view class="video-sub-list" wx:if="{{expandVideoIndex === index && videoMap[item.id] && videoMap[item.id].length > 0}}">
+        <view
+          class="video-sub-item"
+          wx:for="{{videoMap[item.id]}}"
+          wx:for-item="video"
+          wx:for-index="videoIndex"
+          wx:key="fileID"
+          bindtap="onPlayVideo"
+          data-file-id="{{video.fileID}}"
+        >
+          <text class="video-sub-icon">▶</text>
+          <text class="video-sub-name">视频 {{videoMap[item.id].length - videoIndex}}</text>
+          <text class="video-sub-time">{{video.timeStr}}</text>
         </view>
       </view>
 

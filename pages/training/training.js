@@ -1,3 +1,5 @@
+const dbOps = require('../../utils/db-operations')
+
 Page({
   data: {
     currentWorkout: null,
@@ -11,21 +13,48 @@ Page({
     // 录像相关
     recordingExerciseIndex: -1,
     uploadProgress: 0,
-    videoMap: {} // exerciseId -> fileID
+    // videoMap: exerciseId -> [{fileID, cloudPath, timestamp}]
+    videoMap: {},
+    expandVideoIndex: -1
+  },
+
+  // 迁移旧格式 videoMap
+  _migrateVideoMap(videoMap) {
+    if (!videoMap || typeof videoMap !== 'object') return {}
+    let migrated = false
+    const map = {}
+    for (const key of Object.keys(videoMap)) {
+      const val = videoMap[key]
+      if (typeof val === 'string' && val.length > 0) {
+        map[key] = [{ fileID: val, cloudPath: '', timestamp: Date.now() }]
+        migrated = true
+      } else if (Array.isArray(val)) {
+        map[key] = val
+      } else {
+        map[key] = []
+      }
+    }
+    return { map, migrated }
   },
 
   _timerInterval: null,
   _restInterval: null,
 
   onLoad() {
-    // 恢复上次未完成的训练
     const savedWorkout = wx.getStorageSync('activeWorkout')
     if (savedWorkout) {
+      // 迁移旧格式 videoMap
+      const { map: videoMap, migrated } = this._migrateVideoMap(savedWorkout.videoMap)
+      if (migrated) {
+        savedWorkout.videoMap = videoMap
+        wx.setStorageSync('activeWorkout', savedWorkout)
+      }
       this.setData({
         currentWorkout: savedWorkout.workout,
         exercises: savedWorkout.exercises,
         isWorkoutActive: true,
-        startTime: savedWorkout.startTime
+        startTime: savedWorkout.startTime,
+        videoMap
       })
       this._startTimer()
     }
@@ -37,7 +66,6 @@ Page({
 
   // ===== 训练管理 =====
 
-  // 开始训练
   onStartWorkout() {
     const startTime = Date.now()
     const workout = {
@@ -51,13 +79,13 @@ Page({
       exercises: [],
       isWorkoutActive: true,
       startTime,
-      elapsedTime: '00:00'
+      elapsedTime: '00:00',
+      videoMap: {}
     })
     this._startTimer()
     this._saveActiveWorkout()
   },
 
-  // 完成训练
   onFinishWorkout() {
     wx.showModal({
       title: '完成训练',
@@ -74,7 +102,8 @@ Page({
             isWorkoutActive: false,
             startTime: null,
             elapsedTime: '00:00',
-            videoMap: {}
+            videoMap: {},
+            expandVideoIndex: -1
           })
           wx.showToast({ title: '训练已保存', icon: 'success' })
         }
@@ -82,7 +111,6 @@ Page({
     })
   },
 
-  // 放弃训练
   onCancelWorkout() {
     wx.showModal({
       title: '放弃训练',
@@ -99,7 +127,8 @@ Page({
             isWorkoutActive: false,
             startTime: null,
             elapsedTime: '00:00',
-            videoMap: {}
+            videoMap: {},
+            expandVideoIndex: -1
           })
         }
       }
@@ -108,7 +137,6 @@ Page({
 
   // ===== 动作管理 =====
 
-  // 添加动作（跳转到动作库选择）
   onAddExercise() {
     wx.navigateTo({
       url: '/pages/movements/movements?fromTraining=1',
@@ -131,7 +159,6 @@ Page({
     this._saveActiveWorkout()
   },
 
-  // 添加组数
   onAddSet(e) {
     const { index } = e.currentTarget.dataset
     const exercises = [...this.data.exercises]
@@ -145,21 +172,17 @@ Page({
     this._saveActiveWorkout()
   },
 
-  // 完成一组
   onToggleSet(e) {
     const { exIndex, setIndex } = e.currentTarget.dataset
     const exercises = [...this.data.exercises]
     exercises[exIndex].sets[setIndex].done = !exercises[exIndex].sets[setIndex].done
     this.setData({ exercises })
-
-    // 自动开始休息计时
     if (exercises[exIndex].sets[setIndex].done) {
-      this._startRest(90) // 默认90秒休息
+      this._startRest(90)
     }
     this._saveActiveWorkout()
   },
 
-  // 更新组数数据
   onWeightInput(e) {
     const { exIndex, setIndex } = e.currentTarget.dataset
     const exercises = [...this.data.exercises]
@@ -176,7 +199,6 @@ Page({
     this._saveActiveWorkout()
   },
 
-  // 删除动作
   onDeleteExercise(e) {
     const { index } = e.currentTarget.dataset
     wx.showModal({
@@ -195,7 +217,6 @@ Page({
 
   // ===== 视频录制 =====
 
-  // 录制动作视频
   onRecordVideo(e) {
     const { index } = e.currentTarget.dataset
     const exercise = this.data.exercises[index]
@@ -209,7 +230,7 @@ Page({
       success: (res) => {
         const tempFilePath = res.tempFiles[0].tempFilePath
         this.setData({ recordingExerciseIndex: index })
-        this._uploadVideo(exercise.id, tempFilePath, index)
+        this._uploadVideo(exercise.id, tempFilePath)
       },
       fail: (err) => {
         if (err.errMsg && err.errMsg.includes('cancel')) return
@@ -218,20 +239,35 @@ Page({
     })
   },
 
-  // 播放已录制视频
+  // 展开/收起视频列表
+  onToggleVideoList(e) {
+    const { index } = e.currentTarget.dataset
+    this.setData({
+      expandVideoIndex: this.data.expandVideoIndex === index ? -1 : index
+    })
+  },
+
+  // 播放列表中的某个视频
   onPlayVideo(e) {
-    const { exerciseId } = e.currentTarget.dataset
-    const fileID = this.data.videoMap[exerciseId]
+    const { fileID } = e.currentTarget.dataset
     if (!fileID) return
 
-    // 获取临时链接播放
+    wx.showLoading({ title: '加载中...' })
     wx.cloud.getTempFileURL({
       fileList: [fileID],
       success: (res) => {
-        const url = res.fileList[0].tempFileURL
-        wx.previewMedia({
-          sources: [{ url, type: 'video' }]
-        })
+        wx.hideLoading()
+        if (res.fileList[0] && res.fileList[0].tempFileURL) {
+          wx.previewMedia({
+            sources: [{ url: res.fileList[0].tempFileURL, type: 'video' }]
+          })
+        } else {
+          wx.showToast({ title: '视频不存在', icon: 'none' })
+        }
+      },
+      fail: () => {
+        wx.hideLoading()
+        wx.showToast({ title: '视频加载失败', icon: 'none' })
       }
     })
   },
@@ -240,14 +276,23 @@ Page({
   _uploadVideo(exerciseId, tempFilePath) {
     const cloudPath = `workouts/${exerciseId}_${Date.now()}.mp4`
 
-    // 用 uploadTask 支持进度回调
     const uploadTask = wx.cloud.uploadFile({
       cloudPath,
       filePath: tempFilePath,
       success: (res) => {
         const videoMap = { ...this.data.videoMap }
-        videoMap[exerciseId] = res.fileID
-        this.setData({ videoMap, recordingExerciseIndex: -1, uploadProgress: 0 })
+        const now = Date.now()
+        const newVideo = { fileID: res.fileID, cloudPath, timestamp: now }
+        // 追加到数组（最新的在前面）
+        const existing = videoMap[exerciseId] || []
+        videoMap[exerciseId] = [newVideo, ...existing]
+
+        this.setData({
+          videoMap,
+          recordingExerciseIndex: -1,
+          uploadProgress: 0,
+          expandVideoIndex: -1 // 重置展开状态
+        })
         wx.showToast({ title: '视频已保存', icon: 'success' })
         this._saveActiveWorkout()
       },
@@ -321,26 +366,56 @@ Page({
     wx.setStorageSync('activeWorkout', {
       workout: this.data.currentWorkout,
       exercises: this.data.exercises,
-      startTime: this.data.startTime
+      startTime: this.data.startTime,
+      videoMap: this.data.videoMap
     })
   },
 
-  _saveWorkoutHistory() {
-    const history = wx.getStorageSync('workoutHistory') || []
+  async _saveWorkoutHistory() {
+    // 计算总训练量
+    let totalVolume = 0
+    this.data.exercises.forEach(ex => {
+      ex.sets.forEach(set => {
+        if (set.done) {
+          totalVolume += (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0)
+        }
+      })
+    })
+
+    // 准备训练数据
     const record = {
-      id: this.data.currentWorkout.id,
+      workoutId: this.data.currentWorkout.id,
       name: this.data.currentWorkout.name,
       date: this.data.currentWorkout.date,
       duration: this.data.elapsedTime,
+      totalVolume,
       exercises: this.data.exercises.map(e => ({
         id: e.id,
         name: e.name,
+        muscleGroup: e.muscleGroup,
+        equipment: e.equipment,
         sets: e.sets,
-        videoFileID: this.data.videoMap[e.id] || null
+        // 保存视频列表（不含 tempFileURL，仅 fileID）
+        videos: (this.data.videoMap[e.id] || []).map(v => ({
+          fileID: v.fileID,
+          cloudPath: v.cloudPath,
+          timestamp: v.timestamp
+        }))
       })),
       timestamp: Date.now()
     }
-    history.unshift(record)
-    wx.setStorageSync('workoutHistory', history)
+
+    // 保存到云数据库
+    const saved = await dbOps.saveWorkout(record)
+
+    if (saved) {
+      wx.showToast({ title: '训练已保存到云端', icon: 'success' })
+    } else {
+      wx.showToast({ title: '保存到云端失败，已保存到本地', icon: 'none' })
+      // 降级到本地存储
+      const history = wx.getStorageSync('workoutHistory') || []
+      history.unshift(record)
+      wx.setStorageSync('workoutHistory', history)
+    }
   }
 })

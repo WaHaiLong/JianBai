@@ -11,6 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .demo-placeholder {
@@ -24,7 +25,12 @@
 
 .demo-emoji {
   font-size: 120rpx;
-  margin-bottom: 32rpx;
+  margin-bottom: 16rpx;
+}
+
+.demo-hint {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 26rpx;
 }
 
 .demo-actions {
@@ -51,6 +57,129 @@
   height: 480rpx;
 }
 
+/* 视频操作栏 */
+.video-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 32rpx;
+  background-color: #fff;
+}
+
+.video-action-left {
+  display: flex;
+  align-items: center;
+}
+
+.video-count {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.video-action-right {}
+
+.upload-btn {
+  background-color: #1890ff;
+  color: #fff;
+  padding: 12rpx 28rpx;
+  border-radius: 40rpx;
+  font-size: 26rpx;
+}
+
+/* 视频列表 */
+.video-list {
+  background-color: #fff;
+  margin: 0 16rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.video-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.video-item:last-child {
+  border-bottom: none;
+}
+
+.video-item-main {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.video-item-icon {
+  width: 64rpx;
+  height: 64rpx;
+  background-color: #e8f4ff;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1890ff;
+  font-size: 24rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.video-item-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.video-item-name {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.video-item-time {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+.video-item-playing {
+  color: #52c41a;
+  font-size: 22rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.video-item-delete {
+  color: #ff4d4f;
+  font-size: 24rpx;
+  padding: 12rpx 20rpx;
+  flex-shrink: 0;
+}
+
+/* 空视频提示 */
+.video-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48rpx 0 24rpx;
+}
+
+.video-empty-text {
+  color: #999;
+  font-size: 28rpx;
+}
+
+.video-empty-hint {
+  color: #ccc;
+  font-size: 24rpx;
+  margin-top: 8rpx;
+}
+
+/* 动作信息 */
 .info-section {
   background-color: #fff;
   margin: 16rpx;

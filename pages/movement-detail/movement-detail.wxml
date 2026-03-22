@@ -1,7 +1,16 @@
 <view class="container" wx:if="{{exercise}}">
   <!-- 动作演示区 -->
   <view class="demo-area">
-    <view class="demo-placeholder" wx:if="{{!videoSrc}}">
+    <!-- 视频播放器 -->
+    <video
+      wx:if="{{currentVideoSrc}}"
+      class="exercise-video"
+      src="{{currentVideoSrc}}"
+      controls
+      autoplay
+    />
+    <!-- 无视频时的占位 -->
+    <view class="demo-placeholder" wx:elif="{{videos.length === 0}}">
       <text class="demo-emoji">🏋️</text>
       <view class="demo-actions">
         <view class="demo-btn" bindtap="onPlayVideo" wx:if="{{exercise.hasTutorial}}">
@@ -12,13 +21,48 @@
         </view>
       </view>
     </view>
-    <video
-      wx:else
-      class="exercise-video"
-      src="{{videoSrc}}"
-      controls
-      autoplay
-    />
+    <!-- 有视频但未选中播放时 -->
+    <view class="demo-placeholder" wx:else>
+      <text class="demo-emoji">🎬</text>
+      <text class="demo-hint">点击下方列表查看视频</text>
+    </view>
+  </view>
+
+  <!-- 视频操作栏 -->
+  <view class="video-action-bar">
+    <view class="video-action-left">
+      <text class="video-count">📹 我的视频 ({{videos.length}})</text>
+    </view>
+    <view class="video-action-right">
+      <view class="upload-btn" bindtap="onRecordVideo">
+        <text>＋ 上传视频</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 视频列表 -->
+  <view class="video-list" wx:if="{{videos.length > 0}}">
+    <view class="video-item" wx:for="{{videos}}" wx:key="fileID">
+      <view class="video-item-main" bindtap="onPlayListItem" data-index="{{index}}">
+        <view class="video-item-icon">▶</view>
+        <view class="video-item-info">
+          <text class="video-item-name">视频 {{videos.length - index}}</text>
+          <text class="video-item-time">{{item.timeStr}}</text>
+        </view>
+        <view class="video-item-playing" wx:if="{{currentVideoSrc === item.tempFileURL}}">
+          <text>播放中</text>
+        </view>
+      </view>
+      <view class="video-item-delete" catchtap="onDeleteVideo" data-index="{{index}}">
+        <text>删除</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空视频提示 -->
+  <view class="video-empty" wx:if="{{videos.length === 0}}">
+    <text class="video-empty-text">还没有上传过视频</text>
+    <text class="video-empty-hint">点击上方"录制动作"开始录制</text>
   </view>
 
   <!-- 动作信息 -->

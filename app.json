@@ -5,7 +5,8 @@
     "pages/movements/movements",
     "pages/history/history",
     "pages/mine/mine",
-    "pages/movement-detail/movement-detail"
+    "pages/movement-detail/movement-detail",
+    "pages/test-db/test-db"
   ],
   "window": {
     "backgroundTextStyle": "dark",

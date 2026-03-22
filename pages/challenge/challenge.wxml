@@ -2,7 +2,13 @@
   <view class="page-title">训练挑战</view>
 
   <scroll-view scroll-y class="challenge-list">
-    <view class="challenge-card" wx:for="{{challenges}}" wx:key="id">
+    <view 
+      class="challenge-card {{item.isJoined ? 'challenge-card-active' : ''}}" 
+      wx:for="{{challenges}}" 
+      wx:key="id"
+      bindtap="onChallengeTap"
+      data-id="{{item.id}}"
+    >
       <view class="card-left">
         <text class="challenge-emoji">{{item.emoji}}</text>
       </view>
@@ -12,20 +18,72 @@
         <view class="challenge-meta">
           <text class="meta-item">⏱ {{item.duration}}</text>
           <text class="meta-item">📊 {{item.difficulty}}</text>
+          <text class="meta-item" wx:if="{{item.isJoined}}">✓ {{item.checkedDays.length}}/{{item.totalDays}}天</text>
         </view>
         <view class="progress-bar" wx:if="{{item.isJoined}}">
-          <view class="progress-fill" style="width: {{item.progress / item.totalDays * 100}}%"></view>
+          <view class="progress-fill" style="width: {{item.checkedDays.length / item.totalDays * 100}}%"></view>
         </view>
       </view>
       <view
         class="join-btn {{item.isJoined ? 'join-btn-active' : ''}}"
         bindtap="onJoinChallenge"
         data-id="{{item.id}}"
+        catchtap
       >
         <text>{{item.isJoined ? '进行中' : '加入'}}</text>
       </view>
     </view>
   </scroll-view>
+</view>
+
+<!-- 挑战详情弹窗 -->
+<view class="modal-mask" wx:if="{{showDetail}}" bindtap="onCloseDetail">
+  <view class="modal-content" catchtap wx:if="{{selectedChallenge}}">
+    <view class="modal-header">
+      <text class="modal-title">{{selectedChallenge.emoji}} {{selectedChallenge.title}}</text>
+      <view class="close-btn" bindtap="onCloseDetail">✕</view>
+    </view>
+    <view class="modal-body">
+      <text class="detail-desc">{{selectedChallenge.description}}</text>
+      <view class="detail-info">
+        <view class="info-item">
+          <text class="info-label">时长</text>
+          <text class="info-value">{{selectedChallenge.duration}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">难度</text>
+          <text class="info-value">{{selectedChallenge.difficulty}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">进度</text>
+          <text class="info-value">{{selectedChallenge.checkedDays ? selectedChallenge.checkedDays.length : 0}}/{{selectedChallenge.totalDays}}天</text>
+        </view>
+      </view>
+      <view class="detail-progress">
+        <view class="progress-text">
+          <text class="progress-current">{{selectedChallenge.checkedDays ? selectedChallenge.checkedDays.length : 0}}</text>
+          <text class="progress-total">/{{selectedChallenge.totalDays}}</text>
+        </view>
+        <view class="progress-bar-large">
+          <view class="progress-fill-large" style="width: {{(selectedChallenge.checkedDays ? selectedChallenge.checkedDays.length : 0) / selectedChallenge.totalDays * 100}}%"></view>
+        </view>
+      </view>
+      <view class="detail-tip" wx:if="{{selectedChallenge.isJoined}}">
+        <text class="tip-icon">💡</text>
+        <text class="tip-text">每日完成{{selectedChallenge.dailyTarget}}个即可打卡</text>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button 
+        class="checkin-btn {{!selectedChallenge.isJoined ? 'disabled' : ''}}" 
+        bindtap="onCheckIn" 
+        data-id="{{selectedChallenge.id}}"
+        disabled="{{!selectedChallenge.isJoined}}"
+      >
+        {{selectedChallenge.isJoined ? '立即打卡' : '请先加入挑战'}}
+      </button>
+    </view>
+  </view>
 </view>
 
 <!-- 自定义TabBar -->

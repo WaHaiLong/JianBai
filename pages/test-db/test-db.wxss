@@ -1,0 +1,125 @@
+/* pages/test-db/test-db.wxss */
+.container {
+  padding: 20rpx;
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.status {
+  padding: 10rpx 20rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 30rpx;
+  font-size: 24rpx;
+  color: #fff;
+}
+
+.status.error {
+  background: rgba(255, 77, 79, 0.8);
+}
+
+.section {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 15rpx;
+  padding: 25rpx;
+  margin-bottom: 20rpx;
+  font-size: 28rpx;
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+}
+
+.btn.large {
+  padding: 35rpx;
+  font-size: 32rpx;
+  margin-bottom: 10rpx;
+}
+
+.section-title.warning {
+  color: #faad14;
+}
+
+.btn.danger {
+  background: linear-gradient(135deg, #ff4d4f 0%, #ff7875 100%);
+}
+
+.log-box {
+  background: #f8f8f8;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  max-height: 400rpx;
+  overflow-y: auto;
+}
+
+.log {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 10rpx;
+  line-height: 1.6;
+}
+
+.workout-list {
+  margin-top: 20rpx;
+}
+
+.workout-item {
+  background: #f8f8f8;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  margin-bottom: 15rpx;
+}
+
+.workout-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.workout-date {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+}
+
+.workout-volume {
+  font-size: 24rpx;
+  color: #667eea;
+  display: block;
+  margin-top: 10rpx;
+}

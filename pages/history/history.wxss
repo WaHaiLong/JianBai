@@ -136,6 +136,37 @@
   border-radius: 24rpx;
 }
 
+/* 视频列表 */
+.detail-video-list {
+  background: #fafafa;
+  border-radius: 8rpx;
+  padding: 4rpx 0;
+  margin-bottom: 12rpx;
+}
+
+.detail-video-item {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 16rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.detail-video-item:last-child {
+  border-bottom: none;
+}
+
+.detail-video-icon {
+  color: #1890ff;
+  font-size: 22rpx;
+  margin-right: 12rpx;
+  flex-shrink: 0;
+}
+
+.detail-video-name {
+  font-size: 26rpx;
+  color: #333;
+}
+
 .detail-sets { display: flex; flex-direction: column; gap: 8rpx; }
 
 .detail-set {

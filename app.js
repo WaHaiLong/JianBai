@@ -3,7 +3,7 @@ App({
     // 初始化云开发
     if (wx.cloud) {
       wx.cloud.init({
-        env: 'prod-jianbai',
+        env: 'cloud1-7ggix6sid4756a3a',
         traceUser: true
       })
     }
