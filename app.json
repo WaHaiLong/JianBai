@@ -1,6 +1,8 @@
 {
   "pages": [
     "pages/training/training",
+    "pages/training-plan/training-plan",
+    "pages/training-plan-detail/training-plan-detail",
     "pages/challenge/challenge",
     "pages/movements/movements",
     "pages/history/history",

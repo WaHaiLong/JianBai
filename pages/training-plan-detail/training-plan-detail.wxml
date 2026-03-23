@@ -1,0 +1,105 @@
+<!--pages/training-plan-detail/training-plan-detail.wxml-->
+<view class="container" wx:if="{{!isLoading && plan}}">
+  <!-- 计划概览卡片 -->
+  <view class="plan-overview">
+    <view class="plan-header">
+      <text class="plan-title">{{plan.name}}</text>
+      <view class="plan-status {{plan.status === 'active' ? 'active' : ''}}">
+        {{plan.status === 'active' ? '进行中' : '已暂停'}}
+      </view>
+    </view>
+    
+    <text class="plan-desc">{{plan.description}}</text>
+    
+    <view class="plan-stats">
+      <view class="stat-item">
+        <text class="stat-value">{{plan.duration}}</text>
+        <text class="stat-label">总天数</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{plan.frequency}}</text>
+        <text class="stat-label">每周</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{plan.difficulty === 'easy' ? '初级' : plan.difficulty === 'medium' ? '中级' : '高级'}}</text>
+        <text class="stat-label">难度</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 进度卡片 -->
+  <view class="progress-card">
+    <view class="progress-header">
+      <text class="progress-title">完成进度</text>
+      <text class="progress-percentage">{{plan.progress}}%</text>
+    </view>
+    
+    <view class="progress-bar-large">
+      <view class="progress-fill-large" style="width: {{plan.progress}}%"></view>
+    </view>
+    
+    <view class="progress-info">
+      <text class="progress-text">已完成 {{plan.completedDays}} / {{plan.totalDays}} 天</text>
+      <text class="progress-remaining">还剩 {{plan.totalDays - plan.completedDays}} 天</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="btn btn-primary" bindtap="startTraining">
+      开始训练
+    </button>
+    <button class="btn btn-outline" bindtap="completeDay" 
+            wx:if="{{plan.completedDays < plan.totalDays}}">
+      打卡
+    </button>
+    <button class="btn btn-disabled" 
+            wx:else
+            disabled>
+      已完成
+    </button>
+  </view>
+
+  <!-- 训练记录列表 -->
+  <view class="workouts-section">
+    <view class="section-header">
+      <text class="section-title">训练记录</text>
+      <text class="section-count">{{workouts.length}} 条</text>
+    </view>
+    
+    <view class="workout-list" wx:if="{{workouts.length > 0}}">
+      <view class="workout-card" wx:for="{{workouts}}" wx:key="_id" 
+            bindtap="viewWorkout" data-id="{{item._id}}">
+        <view class="workout-date">
+          <text class="date-day">{{item.day}}</text>
+          <text class="date-month">{{item.month}}</text>
+        </view>
+        
+        <view class="workout-info">
+          <view class="workout-exercises">
+            <text class="exercise-count">{{item.exercises.length}} 个动作</text>
+            <text class="exercise-duration">{{item.duration}} 分钟</text>
+          </view>
+          <view class="workout-meta">
+            <text class="workout-calories">{{item.calories}} 千卡</text>
+            <text class="workout-sets">{{item.totalSets}} 组</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="empty-workouts" wx:else>
+      <image class="empty-icon" src="/assets/images/empty-workout.png" mode="aspectFit"></image>
+      <text class="empty-text">还没有训练记录</text>
+      <text class="empty-hint">点击"开始训练"记录第一次训练</text>
+    </view>
+  </view>
+</view>
+
+<!-- 加载中 -->
+<view class="loading-container" wx:if="{{isLoading}}">
+  <view class="loading-spinner"></view>
+  <text class="loading-text">加载中...</text>
+</view>

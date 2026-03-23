@@ -1,0 +1,179 @@
+<!--pages/training-plan/training-plan.wxml-->
+<view class="container">
+  <!-- 当前计划卡片 -->
+  <view class="current-plan-card" wx:if="{{currentPlan}}">
+    <view class="card-header">
+      <text class="card-title">当前计划</text>
+      <view class="plan-badge">进行中</view>
+    </view>
+    
+    <view class="plan-info">
+      <view class="plan-name">{{currentPlan.name}}</view>
+      <view class="plan-description">{{currentPlan.description}}</view>
+      
+      <view class="plan-meta">
+        <view class="meta-item">
+          <text class="meta-label">难度</text>
+          <text class="meta-value">{{currentPlan.difficulty === 'easy' ? '初级' : currentPlan.difficulty === 'medium' ? '中级' : '高级'}}</text>
+        </view>
+        <view class="meta-item">
+          <text class="meta-label">时长</text>
+          <text class="meta-value">{{currentPlan.duration}}天</text>
+        </view>
+        <view class="meta-item">
+          <text class="meta-label">频率</text>
+          <text class="meta-value">{{currentPlan.frequency}}次/周</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="progress-section">
+      <view class="progress-header">
+        <text class="progress-label">完成进度</text>
+        <text class="progress-text">{{currentPlan.completedDays}}/{{currentPlan.totalDays}}天</text>
+      </view>
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{currentPlan.progress}}%"></view>
+      </view>
+    </view>
+    
+    <view class="card-actions">
+      <button class="btn btn-primary" bindtap="goToPlanDetail" data-id="{{currentPlan._id}}">
+        查看详情
+      </button>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!currentPlan}}">
+    <image class="empty-icon" src="/assets/images/empty-plan.png" mode="aspectFit"></image>
+    <text class="empty-text">还没有训练计划</text>
+    <text class="empty-hint">创建一个计划开始你的健身之旅</text>
+    <button class="btn btn-primary btn-lg" bindtap="showAddPlan">
+      创建计划
+    </button>
+  </view>
+
+  <!-- 计划列表 -->
+  <view class="plans-section" wx:if="{{plans.length > 1}}">
+    <view class="section-header">
+      <text class="section-title">所有计划</text>
+    </view>
+    
+    <view class="plan-list">
+      <view class="plan-card" wx:for="{{plans}}" wx:key="_id" 
+            bindtap="goToPlanDetail" data-id="{{item._id}}"
+            wx:if="{{item._id !== currentPlan._id}}">
+        <view class="plan-card-header">
+          <text class="plan-card-name">{{item.name}}</text>
+          <view class="plan-card-status {{item.status === 'active' ? 'active' : ''}}">
+            {{item.status === 'active' ? '进行中' : '已暂停'}}
+          </view>
+        </view>
+        
+        <view class="plan-card-meta">
+          <text class="card-meta-item">{{item.duration}}天</text>
+          <text class="card-meta-item">{{item.frequency}}次/周</text>
+          <text class="card-meta-item">{{item.difficulty === 'easy' ? '初级' : item.difficulty === 'medium' ? '中级' : '高级'}}</text>
+        </view>
+        
+        <view class="plan-card-progress">
+          <view class="mini-progress-bar">
+            <view class="mini-progress-fill" style="width: {{item.progress}}%"></view>
+          </view>
+          <text class="mini-progress-text">{{item.completedDays}}/{{item.totalDays}}</text>
+        </view>
+        
+        <view class="plan-card-actions">
+          <button class="btn btn-small btn-outline" 
+                  catchtap="activatePlan" 
+                  data-id="{{item._id}}"
+                  wx:if="{{item.status !== 'active'}}">
+            激活
+          </button>
+          <button class="btn btn-small btn-danger" 
+                  catchtap="deletePlan" 
+                  data-id="{{item._id}}">
+            删除
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加按钮 -->
+  <view class="fab-add" bindtap="showAddPlan" wx:if="{{currentPlan}}">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <!-- 添加计划弹窗 -->
+  <view class="modal-overlay" wx:if="{{showAddModal}}" bindtap="hideAddModal">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">创建训练计划</text>
+        <text class="modal-close" bindtap="hideAddModal">×</text>
+      </view>
+      
+      <view class="modal-body">
+        <view class="form-group">
+          <text class="form-label">计划名称 *</text>
+          <input class="form-input" 
+                 placeholder="例如：30天增肌计划" 
+                 value="{{formData.name}}" 
+                 bindinput="onNameInput" />
+        </view>
+        
+        <view class="form-group">
+          <text class="form-label">计划描述</text>
+          <textarea class="form-textarea" 
+                    placeholder="描述你的训练目标和内容..."
+                    value="{{formData.description}}" 
+                    bindinput="onDescriptionInput" />
+        </view>
+        
+        <view class="form-group">
+          <text class="form-label">训练时长（天）</text>
+          <slider class="form-slider" 
+                  min="7" 
+                  max="90" 
+                  step="7"
+                  value="{{formData.duration}}" 
+                  activeColor="#FF6B35"
+                  bindchange="onDurationChange" />
+          <text class="slider-value">{{formData.duration}}天</text>
+        </view>
+        
+        <view class="form-group">
+          <text class="form-label">每周训练（次）</text>
+          <slider class="form-slider" 
+                  min="1" 
+                  max="7" 
+                  step="1"
+                  value="{{formData.frequency}}" 
+                  activeColor="#FF6B35"
+                  bindchange="onFrequencyChange" />
+          <text class="slider-value">{{formData.frequency}}次/周</text>
+        </view>
+        
+        <view class="form-group">
+          <text class="form-label">难度等级</text>
+          <picker mode="selector" 
+                  range="{{difficultyOptions}}" 
+                  range-key="label"
+                  value="{{formData.difficulty}}" 
+                  bindchange="onDifficultyChange">
+            <view class="picker">
+              <text>{{formData.difficulty === 'easy' ? '初级' : formData.difficulty === 'medium' ? '中级' : '高级'}}</text>
+              <text class="picker-arrow">›</text>
+            </view>
+          </picker>
+        </view>
+      </view>
+      
+      <view class="modal-footer">
+        <button class="btn btn-secondary" bindtap="hideAddModal">取消</button>
+        <button class="btn btn-primary" bindtap="createPlan">创建</button>
+      </view>
+    </view>
+  </view>
+</view>

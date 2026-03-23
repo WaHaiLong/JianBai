@@ -1,0 +1,461 @@
+/* pages/training-plan/training-plan.wxss */
+.container {
+  min-height: 100vh;
+  background: #F7FAFC;
+  padding: 20rpx;
+}
+
+/* 当前计划卡片 */
+.current-plan-card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.card-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #2D3748;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.plan-badge {
+  background: #48BB78;
+  color: #FFFFFF;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.plan-info {
+  margin-bottom: 32rpx;
+}
+
+.plan-name {
+  font-size: 42rpx;
+  font-weight: 700;
+  color: #2D3748;
+  margin-bottom: 12rpx;
+  display: block;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.plan-description {
+  font-size: 28rpx;
+  color: #718096;
+  line-height: 1.6;
+  display: block;
+  font-family: 'PingFang SC', sans-serif;
+}
+
+.plan-meta {
+  display: flex;
+  gap: 40rpx;
+  margin-top: 24rpx;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.meta-label {
+  font-size: 24rpx;
+  color: #A0AEC0;
+  font-family: 'PingFang SC', sans-serif;
+}
+
+.meta-value {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2D3748;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+/* 进度条 */
+.progress-section {
+  margin-bottom: 24rpx;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.progress-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2D3748;
+  font-family: 'PingFang SC', sans-serif;
+}
+
+.progress-text {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #FF6B35;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.progress-bar {
+  height: 16rpx;
+  background: #E2E8F0;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FF6B35 0%, #FF8C42 100%);
+  border-radius: 8rpx;
+  transition: width 0.3s ease;
+}
+
+.card-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 40rpx;
+}
+
+.empty-icon {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 40rpx;
+  opacity: 0.6;
+}
+
+.empty-text {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #2D3748;
+  margin-bottom: 16rpx;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.empty-hint {
+  font-size: 28rpx;
+  color: #718096;
+  margin-bottom: 40rpx;
+  font-family: 'PingFang SC', sans-serif;
+}
+
+/* 计划列表 */
+.plans-section {
+  margin-top: 32rpx;
+}
+
+.section-header {
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2D3748;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.plan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.plan-card {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 16rpx rgba(0, 0, 0, 0.04);
+}
+
+.plan-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.plan-card-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2D3748;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.plan-card-status {
+  font-size: 24rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 16rpx;
+  background: #E2E8F0;
+  color: #718096;
+  font-family: 'PingFang SC', sans-serif;
+}
+
+.plan-card-status.active {
+  background: #48BB78;
+  color: #FFFFFF;
+}
+
+.plan-card-meta {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.card-meta-item {
+  font-size: 24rpx;
+  color: #718096;
+  font-family: 'PingFang SC', sans-serif;
+}
+
+.plan-card-progress {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.mini-progress-bar {
+  flex: 1;
+  height: 8rpx;
+  background: #E2E8F0;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.mini-progress-fill {
+  height: 100%;
+  background: #FF6B35;
+  border-radius: 4rpx;
+}
+
+.mini-progress-text {
+  font-size: 24rpx;
+  color: #718096;
+  font-family: 'PingFang SC', sans-serif;
+}
+
+.plan-card-actions {
+  display: flex;
+  gap: 12rpx;
+}
+
+/* 按钮样式 */
+.btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'PingFang SC', sans-serif;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+  color: #FFFFFF;
+}
+
+.btn-secondary {
+  background: #F7FAFC;
+  color: #2D3748;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2rpx solid #E2E8F0;
+  color: #718096;
+}
+
+.btn-danger {
+  background: #FED7D7;
+  color: #E53E3E;
+}
+
+.btn-small {
+  flex: 0 0 auto;
+  padding: 0 24rpx;
+  height: 60rpx;
+  font-size: 24rpx;
+}
+
+.btn-lg {
+  width: 400rpx;
+  height: 88rpx;
+}
+
+/* 悬浮添加按钮 */
+.fab-add {
+  position: fixed;
+  bottom: 100rpx;
+  right: 40rpx;
+  width: 120rpx;
+  height: 120rpx;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+  border-radius: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 32rpx rgba(255, 107, 53, 0.4);
+  z-index: 100;
+}
+
+.fab-icon {
+  font-size: 60rpx;
+  color: #FFFFFF;
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* 弹窗样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 40rpx;
+}
+
+.modal-content {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  width: 100%;
+  max-width: 600rpx;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx;
+  border-bottom: 1rpx solid #E2E8F0;
+}
+
+.modal-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #2D3748;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.modal-close {
+  font-size: 60rpx;
+  color: #A0AEC0;
+  line-height: 1;
+  padding: 0 16rpx;
+}
+
+.modal-body {
+  padding: 32rpx;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 16rpx;
+  padding: 24rpx 32rpx;
+  border-top: 1rpx solid #E2E8F0;
+}
+
+/* 表单样式 */
+.form-group {
+  margin-bottom: 32rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2D3748;
+  margin-bottom: 16rpx;
+  font-family: 'PingFang SC', sans-serif;
+}
+
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 24rpx;
+  background: #F7FAFC;
+  border: 2rpx solid #E2E8F0;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #2D3748;
+  font-family: 'PingFang SC', sans-serif;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 160rpx;
+  padding: 16rpx 24rpx;
+  background: #F7FAFC;
+  border: 2rpx solid #E2E8F0;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #2D3748;
+  line-height: 1.6;
+  font-family: 'PingFang SC', sans-serif;
+}
+
+.form-slider {
+  margin: 24rpx 0;
+}
+
+.slider-value {
+  display: block;
+  text-align: center;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #FF6B35;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.picker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80rpx;
+  padding: 0 24rpx;
+  background: #F7FAFC;
+  border: 2rpx solid #E2E8F0;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #2D3748;
+  font-family: 'PingFang SC', sans-serif;
+}
+
+.picker-arrow {
+  font-size: 40rpx;
+  color: #A0AEC0;
+  line-height: 1;
+}

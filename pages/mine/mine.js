@@ -151,6 +151,13 @@ Page({
     })
   },
 
+  // 跳转到训练计划
+  onTrainingPlanTap() {
+    wx.navigateTo({
+      url: '/pages/training-plan/training-plan'
+    })
+  },
+
   onSettingsTap() {
     wx.showActionSheet({
       itemList: ['数据迁移到云端', '清除本地数据', '设置（开发中）'],
