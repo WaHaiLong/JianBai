@@ -64,6 +64,18 @@ Page({
     this._clearTimers()
   },
 
+  onHide() {
+    // 页面隐藏时暂停计时器，避免后台消耗性能
+    this._clearTimers()
+  },
+
+  onShow() {
+    // 页面显示时恢复计时器
+    if (this.data.isWorkoutActive) {
+      this._startTimer()
+    }
+  },
+
   // ===== 训练管理 =====
 
   onStartWorkout() {
@@ -207,8 +219,11 @@ Page({
       success: (res) => {
         if (res.confirm) {
           const exercises = [...this.data.exercises]
-          exercises.splice(index, 1)
-          this.setData({ exercises })
+          const deletedExercise = exercises.splice(index, 1)[0]
+          // 同时清理 videoMap 中对应的视频记录，避免孤儿数据
+          const videoMap = { ...this.data.videoMap }
+          delete videoMap[deletedExercise.id]
+          this.setData({ exercises, videoMap })
           this._saveActiveWorkout()
         }
       }
@@ -233,7 +248,11 @@ Page({
         this._uploadVideo(exercise.id, tempFilePath)
       },
       fail: (err) => {
-        if (err.errMsg && err.errMsg.includes('cancel')) return
+        if (err.errMsg && err.errMsg.includes('cancel')) {
+          this.setData({ recordingExerciseIndex: -1 })
+          return
+        }
+        this.setData({ recordingExerciseIndex: -1 })
         wx.showToast({ title: '录制失败', icon: 'none' })
       }
     })

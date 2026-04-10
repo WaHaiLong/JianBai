@@ -90,12 +90,12 @@ class DBOperations {
   }
 
   /**
-   * 删除训练记录
+   * 删除训练记录（仅删除当前用户的记录）
    */
   async deleteWorkout(workoutId) {
     try {
       const res = await this.db.collection(WorkoutModel.collectionName)
-        .where({ workoutId })
+        .where({ workoutId, _openid: '{openid}' })
         .remove()
       return res.stats.removed > 0
     } catch (error) {
@@ -111,7 +111,7 @@ class DBOperations {
     try {
       const { challengeId, isJoin } = challengeData
       const existing = await this.db.collection(ChallengeModel.collectionName)
-        .where({ challengeId })
+        .where({ challengeId, _openid: '{openid}' })
         .get()
 
       if (isJoin) {
@@ -146,7 +146,9 @@ class DBOperations {
    */
   async getChallenges() {
     try {
-      const res = await this.db.collection(ChallengeModel.collectionName).get()
+      const res = await this.db.collection(ChallengeModel.collectionName)
+        .where({ _openid: '{openid}' })
+        .get()
       return res.data
     } catch (error) {
       console.error('获取挑战列表失败', error)
@@ -160,7 +162,7 @@ class DBOperations {
   async checkInChallenge(challengeId) {
     try {
       const res = await this.db.collection(ChallengeModel.collectionName)
-        .where({ challengeId })
+        .where({ challengeId, _openid: '{openid}' })
         .get()
 
       if (res.data.length === 0) {
@@ -202,7 +204,7 @@ class DBOperations {
     try {
       const { exerciseId, exerciseName, muscleGroup, equipment } = exerciseData
       const existing = await this.db.collection(FavoriteModel.collectionName)
-        .where({ exerciseId })
+        .where({ exerciseId, _openid: '{openid}' })
         .get()
 
       if (existing.data.length > 0) {
@@ -235,6 +237,7 @@ class DBOperations {
   async getFavorites() {
     try {
       const res = await this.db.collection(FavoriteModel.collectionName)
+        .where({ _openid: '{openid}' })
         .orderBy('createTime', 'desc')
         .get()
       return res.data
@@ -251,7 +254,7 @@ class DBOperations {
     try {
       const { planId } = planData
       const existing = await this.db.collection(PlanModel.collectionName)
-        .where({ planId })
+        .where({ planId, _openid: '{openid}' })
         .get()
 
       const data = {
@@ -282,6 +285,7 @@ class DBOperations {
   async getPlans() {
     try {
       const res = await this.db.collection(PlanModel.collectionName)
+        .where({ _openid: '{openid}' })
         .orderBy('isPinned', 'desc')
         .orderBy('updateTime', 'desc')
         .get()
@@ -293,12 +297,12 @@ class DBOperations {
   }
 
   /**
-   * 删除训练计划
+   * 删除训练计划（仅删除当前用户的计划）
    */
   async deletePlan(planId) {
     try {
       const res = await this.db.collection(PlanModel.collectionName)
-        .where({ planId })
+        .where({ planId, _openid: '{openid}' })
         .remove()
       return res.stats.removed > 0
     } catch (error) {
@@ -308,12 +312,12 @@ class DBOperations {
   }
 
   /**
-   * 置顶/取消置顶训练计划
+   * 置顶/取消置顶训练计划（仅操作当前用户的计划）
    */
   async pinPlan(planId, isPinned) {
     try {
       const res = await this.db.collection(PlanModel.collectionName)
-        .where({ planId })
+        .where({ planId, _openid: '{openid}' })
         .get()
 
       if (res.data.length === 0) {

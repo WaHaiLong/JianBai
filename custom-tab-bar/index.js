@@ -39,6 +39,12 @@ Component({
     this.updateSelected()
   },
 
+  pageLifetimes: {
+    show() {
+      this.updateSelected()
+    }
+  },
+
   methods: {
     updateSelected() {
       const pages = getCurrentPages()
